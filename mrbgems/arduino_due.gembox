@@ -1,0 +1,5 @@
+# Minimal gems for Arduino Due low-memory environment
+MRuby::GemBox.new do |conf|
+  # conf.gem :core => "mruby-print"
+  # conf.gem :core => "mruby-numeric-ext"
+end

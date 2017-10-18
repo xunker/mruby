@@ -24,14 +24,18 @@ MRuby::CrossBuild.new("ArduinoDue") do |conf|
   # Mac OS X, Arduino IDE <= 1.5.6
   # ARDUINO_PATH = '/Applications/Arduino.app/Contents/Resources/Java'
   # Mac OS X, Arduino IDE >= 1.5.7
-  # ARDUINO_PATH = '/Applications/Arduino.app/Contents/Java'
+  ARDUINO_PATH = '/Applications/Arduino.app/Contents/Java'
   # GNU Linux
-  ARDUINO_PATH = '/opt/arduino'
+  # ARDUINO_PATH = '/opt/arduino'
    # Arduino IDE <= 1.5.6
-  BIN_PATH = "#{ARDUINO_PATH}/hardware/tools/g++_arm_none_eabi/bin"
+  # BIN_PATH = "#{ARDUINO_PATH}/hardware/tools/g++_arm_none_eabi/bin"
   # Arduino IDE >= 1.5.7
   # BIN_PATH = "#{ARDUINO_PATH}/hardware/tools/gcc-arm-none-eabi-4.8.3-2014q1/bin"
-  SAM_PATH = "#{ARDUINO_PATH}/hardware/arduino/sam"
+  # Arduino IDE >= 1.6.x
+  BIN_PATH = "/Users/mnielsen/Library/Arduino15/packages/arduino/tools/arm-none-eabi-gcc/4.8.3-2014q1/bin"
+  # SAM_PATH = "#{ARDUINO_PATH}/hardware/arduino/sam"
+  SAM_PATH = "/Users/mnielsen/Library/Arduino15/packages/arduino/hardware/sam/1.6.11"
+  # TARGET_PATH = "#{SAM_PATH}/variants/arduino_due_x"
   TARGET_PATH = "#{SAM_PATH}/variants/arduino_due_x"
 
   conf.cc do |cc|
@@ -45,13 +49,20 @@ MRuby::CrossBuild.new("ArduinoDue") do |conf|
     cc.compile_options = "%{flags} -o %{outfile} -c %{infile}"
 
     #configuration for low memory environment
-    cc.defines << %w(MRB_HEAP_PAGE_SIZE=64)
+    cc.defines << %w(MRB_HEAP_PAGE_SIZE=4) # cc.defines << %w(MRB_HEAP_PAGE_SIZE=64)
     cc.defines << %w(MRB_USE_IV_SEGLIST)
-    cc.defines << %w(KHASH_DEFAULT_SIZE=8)
-    cc.defines << %w(MRB_STR_BUF_MIN_SIZE=20)
+    cc.defines << %w(KHASH_DEFAULT_SIZE=4) # cc.defines << %w(KHASH_DEFAULT_SIZE=8)
+    cc.defines << %w(MRB_STR_BUF_MIN_SIZE=20) # turning this to 1 reduced allocated size by 99 bytes, but may have side-effects
     cc.defines << %w(MRB_GC_STRESS)
-    #cc.defines << %w(MRB_DISABLE_STDIO) #if you dont need stdio.
-    #cc.defines << %w(POOL_PAGE_SIZE=1000) #effective only for use with mruby-eval
+    # cc.defines << %w(MRB_DISABLE_STDIO) #if you dont need stdio.
+    # cc.defines << %w(POOL_PAGE_SIZE=1000) #effective only for use with mruby-eval
+
+    # cc.defines << %w(MRB_GC_FIXED_ARENA) # used with MRB_GC_ARENA_SIZE
+    # cc.defines << %w(MRB_GC_ARENA_SIZE=50) # default 100, may save 100 bytes of allocated memory
+    # cc.defines << %w(MRB_INT16)
+    # cc.defines << %w(MRB_USE_FLOAT)
+    # cc.defines << %w(MRB_STACK_MAX=0x800) # Max Stack to 2048, does not effect allocated size
+    # cc.defines << %w(MRB_STACK_GROWTH=8) # default 128, does not effect allocated size
   end
 
   conf.cxx do |cxx|
@@ -75,17 +86,17 @@ MRuby::CrossBuild.new("ArduinoDue") do |conf|
   conf.build_mrbtest_lib_only
 
   #disable C++ exception
-  conf.disable_cxx_exception
+  # conf.disable_cxx_exception
 
   #gems from core
-  conf.gem :core => "mruby-print"
-  conf.gem :core => "mruby-math"
-  conf.gem :core => "mruby-enum-ext"
+  # conf.gem :core => "mruby-print"
+  # conf.gem :core => "mruby-math"
+  # conf.gem :core => "mruby-enum-ext"
+  # conf.gem :core => "mruby-compiler"
 
   #light-weight regular expression
-  conf.gem :github => "masamitsu-murase/mruby-hs-regexp", :branch => "master"
+  # conf.gem :github => "masamitsu-murase/mruby-hs-regexp", :branch => "master"
 
-  #Arduino API
-  #conf.gem :github =>"kyab/mruby-arduino", :branch => "master"
+  conf.gembox 'arduino_due'
 
 end
