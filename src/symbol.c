@@ -13,11 +13,13 @@
 #include <mruby/class.h>
 
 /* ------------------------------------------------------ */
+#pragma pack(1)
 typedef struct symbol_name {
   mrb_bool lit : 1;
   uint16_t len;
   const char *name;
 } symbol_name;
+#pragma pack()
 
 static inline khint_t
 sym_hash_func(mrb_state *mrb, mrb_sym s)

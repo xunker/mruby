@@ -10,6 +10,7 @@
 #define MRB_FIXNUM_SHIFT 0
 #define MRB_TT_HAS_BASIC MRB_TT_OBJECT
 
+#pragma pack(1)
 typedef struct mrb_value {
   union {
     mrb_float f;
@@ -19,6 +20,7 @@ typedef struct mrb_value {
   } value;
   enum mrb_vtype tt;
 } mrb_value;
+#pragma pack()
 
 #define mrb_float_pool(mrb,f) mrb_float_value(mrb,f)
 
