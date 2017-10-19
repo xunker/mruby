@@ -60,7 +60,7 @@ MRuby::CrossBuild.new("ArduinoDue") do |conf|
     # cc.defines << %w(MRB_GC_FIXED_ARENA) # used with MRB_GC_ARENA_SIZE
     # cc.defines << %w(MRB_GC_ARENA_SIZE=50) # default 100, may save 100 bytes of allocated memory
     # cc.defines << %w(MRB_INT16)
-    # cc.defines << %w(MRB_USE_FLOAT)
+    # cc.defines << %w(MRB_USE_FLOAT) # Use single-precision float instead of double. Saves memory, but crashes arduino.
     # cc.defines << %w(MRB_STACK_MAX=0x800) # Max Stack to 2048, does not effect allocated size
     # cc.defines << %w(MRB_STACK_GROWTH=8) # default 128, does not effect allocated size
   end
