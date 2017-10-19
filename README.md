@@ -1,3 +1,24 @@
+This repo is a fork of mruby that is configured to work with the Arduino Due.
+
+The branch to use is `arduino_due`, and is currently set the default branch. The
+branch was forked from the mruby v1.3.0 (stable branch) release from July 2017.
+
+`build_config_ArduinoDue.rb` has been updated to work with Arduino IDE v1.8.3
+and been configured for more aggressive memory savings.
+
+Gembox file for that build file has been created: `mrbgems/arduino_due.gembox`.
+
+`include/mruby/boxing_no.h` and `src/symbol.c` have been modified for memory
+savings using instructions from http://d.hatena.ne.jp/kyab/20130203.
+
+It is best demonstrated on the Arduino Due with this example sketch:
+https://github.com/xunker/mruby_arduino_due_example
+
+It is intended to be used with https://github.com/xunker/mruby_arduino_library,
+but may still work with https://github.com/kyab/mruby-arduino (untested).
+
+---
+
 [![Build Status][build-status-img]][travis-ci]
 
 ## What is mruby
